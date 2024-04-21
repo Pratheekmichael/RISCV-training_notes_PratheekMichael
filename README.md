@@ -268,7 +268,49 @@ the rule can be added in the tech file by addition of poly voilation
 copy the 3 polyres and check the rules
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/33486f88-581b-40e7-964a-530aededc245)
 
+Day 4 - Pre layout timing analysis and importance of good clock tree
 
-Day 4
+Sk1- Timing modelling using delay tables
+
+L1- lab steps to convert grid info to track info, L2 - Lab steps to convert magic layout to std cell LEF, L3 - Introduction to timing libs and steps to include new cell in synthesis
+We have done design setup, synthesis, floorplan, extracted spice model.
+2 rules to follow,
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/2a44b14e-0979-48fd-964a-966b52152882)
+go to folder Desktop/work/tools/openlane_working_dir/openlane/pdks/sky130A/libs.tech/openlane/sky130_fd_sc_hd/
+if we see the file tracks.info
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/1e35ee11-6705-4e40-93fe-9a8a10c84547)
+tracks are used for routing stages, routes can go over the tracks. we need to see that the inverter layout pins are on the tracks definted, for that we have to change the grid spacing to the one shown in the track info, and check if the pins are on the intersection,
+in the tkcon window, use "grid 0.46um 0.34um 0.23um 0.17um"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/0bc1c8b0-0945-4bc2-b6ff-5f25b31328be)
+the image shows that the input and output pins of the inverter are on the horizontal and vertical intersection of the grid which was spaced per tracks info.
+the width of the inverter is in odd multiple of the x pitch, from the image it shows 3 boxes.
+Port definition needs to be done next, did not implement because its already done by the instructor, instruction is given in his github link
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f3edae8a-c092-42db-bd0c-ed7750114553)
+Next is to set the port class and port use attribute for the layout, select the port, S, in this example, select output Y, and check what is it connected to by using the "what" command in the tkcon window, use the command "port class output" "port use signal" to denote it as output for signal, similarly we do it for input port.
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a96be4ab-ceb0-4ddc-9114-6339d8f3dcc4)
+we use the command save sky130_vsdinv.mag
+to generate the lef file, we launch magic "magic -T sky130A.tech sky130_vsdinv.mag &"
+use the command "lef write" in the tkcon window
+copy the lef to picorv32a folder, the basic idea is to add our custom cell to the openlane flow
+cp sky130_vsdinv.lef /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/
+copy the library files
+cp libs/sky130_fd_sc_hd__* /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/
+
+we need to modify the config.tcl
+et ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib"
+set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__fast.lib"
+set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__slow.lib"
+set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib"
+
+set ::env(EXTRA_LEFS) {glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef ]
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d49acc09-228e-4962-81d1-82892c911dba)
+we need to go to the openlane directory, cd Desktop/work/tools/openlane_working_dir/openlane
+we invoke the docker, "./flow.tcl -interactive", "package require openlane 0.9, "prep -design picorv32a", "set lefs [glob $::env(DESIGN_DIR)/src/*.lef}","add_lefs -src $lefs", and run_synthesis
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/dfea9a28-3a63-4557-b0d0-b1c6180c93c8)
+
+L4- Introduction to delay tables L5- Delay table usage part 1, L6- Delay table usage part 2
+
+L7- Lab steps to configure synthesis settings to fix slack and include vsdinv
+
 
 Day 5
