@@ -309,8 +309,70 @@ we invoke the docker, "./flow.tcl -interactive", "package require openlane 0.9, 
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/dfea9a28-3a63-4557-b0d0-b1c6180c93c8)
 
 L4- Introduction to delay tables L5- Delay table usage part 1, L6- Delay table usage part 2
+Different sized buffer has different delay tables, whose values are characterized and can be extrapolated.
+Observations: 1) 2 levels of buffering, 2) at every level, each node should drive same load 3) every level should have identical buffer.
 
 L7- Lab steps to configure synthesis settings to fix slack and include vsdinv
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/878b6bc7-b0b4-456f-b93c-0d89655af640)
+when we look at merged.lef folder, we can see that the custom inverter cell was placed in the design
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/aa5f0980-bb0c-4346-9754-f081922ecd73)
+reran synthesis with "set ::env(SYNTH_STRATEGY) "DELAY 3" & "set ::env(SYNTH_SIZING) 1"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9fe16df4-4b33-4ea7-bd21-f83139de71c8)
+Since run_floorlpan gave error, followed the following command which is equivalent, "init_floorplab", "place_io","tap_decap_or"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/6907689e-4a4f-45b4-a6ac-da757246cf95)
+next is to "run_placement" 
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/04db3166-0c67-48e5-a202-8085f5f8d926)
+when I attempted to open magic and look at the placement def file, i got error so I reran the steps above
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/dff2fa52-53de-4c6c-aeac-8a2ac3f622df)
+going to the cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/20-04_16-20/results/placement
+opening up magic using magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/51a2706b-ff26-49c2-92b1-a5db0227be86)
+we can use the command expand in the tkcon window and see the LEF, this shows that the metal 1 line from the library and the custom inverter cell is aligned correctly
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9e0b8066-5e9b-44a2-a5ab-ad064d307f60)
+another view
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/8ef0ee59-4c73-4306-aba8-6610a9e3747a)
 
+SK2- timing analysis with ideal clocks using open STA
+L1-setup timing analysis and introduction to flip flop setup time, L2-Introduction to clock jitter and uncertainity
+Combinational delay < (T- setup time)
+jitter: temporary variation of clock period, adding uncertainity to the above equation
+combinational delay <(T- setup time -setup uncertainity)
+Combinational delay will involves the cell delay+wire length delay as well
+
+L3- Lab steps to configure open STA for post -synth timing analysis, L4-lab steps to optimize synthesis to reduce setup voilation, L5- Lab steps to do basic timing ECO
+Defining the pre_sta.conf (picture collected post simulation)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/504d0626-86fc-446d-9481-c233cbfe7acc)
+my_base.sdc definition in the folder Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f6bbedfe-917e-4964-8a6d-79e5e6fa7c6a)
+if we run the sta analysis from the folder openlane, "sta pre_sta.conf"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f145cbff-b1e9-478c-9fa4-a5ae4897478d)
+we got a voilated slack
+Delay of any cell =Fn(input slew, output capacitance),
+We can try to optimize out fan out value
+In the openlane flow, we set, "set ::env(SYNTH_MAX_FANOUT) 4" and "run_synthesis"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9c8a6649-0a42-48d4-9e26-474ec085b63d)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/321598ff-889e-4741-b06b-4d7251b773e0)
+trying to see if replacing a particular gate cell will reduce the slack
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/2719f8a6-21a5-437c-ab7d-1515ad1fc122)
+slack seemed to have reduced slightly
+attempted few more iterations
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a1563f18-fb8a-4dbb-92d2-a4b22ae99835)
+Using the delay 3 will reduce the tns and wns and avoid slack
+
+SK3 - CTS triton CTS and signal integrity
+L1 - Clock tree routing and buffering using H tree algorithm, L2-cross talk and clock net shielding
+skew ~0 or close to 0
+H tree uses a midpoint strategy and splits, in order to give the timing requirement for the flops at the same time
+Since the clock is signal is provided by wires, we need to add buffers, for signal integrity,
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/48fcbc30-b70f-4596-8a68-065335f4b5ef)
+Even though we add buffer, we need shielding to protect the integrity of these clock nets, therefore we need clock net shielding, this is to avoid glitch and delta delay. Giltch can reset memory chip therefore need to be addressed. we have to shield couple of other wiring which are important as well in over to prevent the glitch or cross talk
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/15fb841b-deb7-435d-ba05-9fb854976984)
+
+L3 lab steps to run CTS using Triton CTS L4 Lab steps to verify CTS runs
+We can save our old verilog file and make a copy of it,
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/2916069d-b565-4e90-bb67-571914232aea)
+we can write_verilog /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/20-04_16-58/results/synthesis/picorv32a.synthesis.v
+As the previous design had better numbers we can use the old settings with SYNTH_STRATEGY having DELAY 3 and, in order to overwrite the result in the present folder, we can always use the command "prep -design picorv32a -tag 20-04_16-58 -overwrite", and use the lefs, rerun synthesis, rerun floorplan, and run CTS
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/09536521-5558-4cec-9278-7a3d0173bb4f)
 
 Day 5
