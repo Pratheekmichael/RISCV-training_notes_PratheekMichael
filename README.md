@@ -129,7 +129,29 @@ L2- Optimize placement using estimated wire-length and capacitance
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/61900166-e631-443f-922c-2cba3cf8e41f)
 The wire that is needed to connect these cells will have Cap associated with them, the slew gets implemented because of this, therefore repeaters are needed to maintain signal integrity, ENG needs to decide on how many repeaters/buffers are needed. 
 
+L3- final placement optimization, discusses the buffer placement by estimated wire length
 
+L4- Need for libraries and characterization
+Logic synthesis --> import netlist of LS and do --> floorplanning --> placement (optimization of netlist placemenent) --> clock tree synthesis --> routing stage (maze routing) --> Static timing analysis (setup time and hold time) --> sign off
+Collection of gates are called library.
+
+L5 - Congestion aware placement using replace
+When run placement command is executed, a global placement happens, which has HPWL half parameter wirelength which needs to be optimized.
+the next command in the flow will be "run_placement"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/28a38c0e-bb50-4e58-8047-8d332bdf20e3)
+In order to load the gnerated file go to the directory cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/16-04_01-39/results/placement/
+and use the command "magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &" to view layout post placement
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d6ef537a-1b57-4ad3-ab8e-896905df9fa4)
+Placed cells view
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/cc183e4d-91ac-4a06-a451-bbe56b3faf45)
+
+SK3 Cell design and characterization
+
+L1- Inputs for cell design flow, L2- circuit design step, L3 - Layout design design step
+Library is a place where we keep all standard cells, which are buff, FF, AND, OR gates, these cells can be of varying dimesions which will vary the cells drive strength. The dimesions will cause the keep parameter changes, example, threshold change.
+
+The instructors courses, (1) circuit design and spice simulation, (2) custom layout has more information about the cell design flow.
+A rough idea for Cell design flow has (1) inputs: PDKS, DRC, LVS, library and user defined specs, SPICE model, (ENG: choose proper library cell) --> (2) Design steps: Circuit design, layout design, characterization (output of circuit design is circuit description language)
 
 Day 3
 
