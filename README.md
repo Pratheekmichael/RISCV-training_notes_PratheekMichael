@@ -80,9 +80,55 @@ The synthesis statistic report gives us the info about the flop ratio again.
 
 Day 2 - Good floorplan vs bad floorplan and introduction to library cells
 
-SK1 - chip floor planning considerations
+Sk1 - chip floor planning considerations
 
 L1 - Utilization factor and aspect ratio
+Dimension of the standard cells are the feature which is of interest to find the total area of the standard cells inside the netlist. A silicon wafer will consider multiple die, a die has a core which has the logic built on it. Utilization factor(UF) = area occupied by the netlist/ area of the core. If UF=1 then core is completely utilized and additional logic cannot be necessary. Aspect Ratio = Height of the die/ width of die, if AR 1, then its a square. example width of core is 4 unit and length is 2 unit, UF=0.5, AR=0.5.
+
+L2 - Concept of preplaced cells.
+Preplaced cells, a combinational logic output can be implemented in the form of gates, split the gates into blocks,now the io for these blocks need to be connected to regenerate the combination logic, ex for this is memory, clock gating cells, comparator, MUX, these are called preplaced cells. These IPs are palced in user defined location prior to the automated PNR flow, hence they are called preplaced cells. The automated PNR tool cannot move preplaced cells, the PNR tool has to go around these cells to do its function.
+
+L3 - De-coupling capacitors
+Why do we need Decoup capacitor? When a gate switches, the supply voltage needs to provide the charge required, the VDD needs to provide this, VSS needs to take in the discharge current. The VDD can have multiple voltage drop due to practical factors like resistance and inductance, therefore, VDD will now have diminished to VDD' which is not the same as VDD. if the VDD' is in the undefined region of the noise margin, then there is a problem for the circuit to design what charge it is getting. Therefore, we add decoupling capacitor to decouple the the circuit from the power supply, this will avoid voltage drop. After the decoup is added, when there is switching activity the decoup cap provides the charge and will replinsh itself when the activity is not done. Therefore, decoupling capacitor is placed in between preplaced cells.
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/e7fd48f7-936d-4887-83ec-6d72d49568a6)
+
+L4 - Power planning
+Macros needing power which is tapped from VDD. When a 16 bit bus discharges all at once, there is a ground bounce. When these 16 bit bus caps require to charge at once, then it will need power all at once, which will cause voltage droop. Therefore, instead of one single power supply point, we can setup multiple power supply pins or points which is similar to,
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a0547956-feff-4cc4-b791-317dff2b15e7)
+
+L5 - Pin placement and logical cell palcement
+Netlist - connectivity information between different gates which is defined in verilog HDL. The pins are placed in the die area outside the core and it will be fixed in this place. Frontend team - netlist connectivity and backend team - pin placement, therefore a proper design knowledge is needed between both teams. Clk ports are a bit thicker, to get least resistance. A logical cell blockage is done in order to make sure once the io pins are placed, nothing is placed in that area by the PNR s/w.
+
+L6 - steps to run floorplan using OPENLANE
+After synthesis the next step is the flooplan. PNR flow is an iterative flow which needs certain parameters to be active at certain steps, therfore it is the ENGs decision to make use of appropriate parameters. In Desktop/work/tools/openlane_working_dir/openlane/configuration folder there is a readme.md which will explain about all the parameters.
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f23bd0ad-55fc-4d1a-9a4f-204ecc51df21)
+The .tcl priority for floorplan.tcl (system default) will be the least and will be superceeded design by config.tcl and the sky130A_sky130_fd_sc_hd_config.tcl
+The next step is the run the floorplan, in the openlane directory, which is cd Desktop/work/tools/openlane_working_dir/openlane, we invoke the command "docker". 
+The next command is "./flow.tcl -interactive", once Open lane launches, we import packages required to run this and the command is "package required openlane 0.9"
+The next step is to prep design, to have design specific files generated in the Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a folder. the command for  this is "prep -design picorv32a", followed by the command "run_synthesis" and the command "run_floorplan"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f6bbbed9-5f6d-49f9-a435-ced986510fb8)
+
+L7, L8- REview flooplan layout in Magic
+the flooplan.def (design exchange format) is populated in the results folder.
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9a677e8d-0235-4231-a339-fcc8ca986396)
+To see actual layout in magic, go to the respective directory
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/14-04_23-16/results/floorplan/
+and use the command
+"magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &" to get the layout after floorplan sim
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/86b5adc4-b228-4e3a-b9c2-e0fca66dbece)
+to zoom, use the left and right click of the mouse to define a box and z to zoom in and to select a cell use s after highlighting on the cell use the command "what" in the tkcon window to see what is the selected cell.
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9542f146-da54-4783-8ded-c04e05233449)
+
+SK2- Library Binding and placement
+
+L1 - Netlist binding and initial place design
+In theory the AND gate may look different than when it is designed in layout, the layout has dimensions which can be used by ENGs. These netlist blocks can be found in Standard cell library, the library will also have various falvors of each cell, i.e., bigger dimensions of the same cells, these bigger cells might improve the design at the cost of the area utilized.
+Placement will be with respect the input and output pins and also the netlist priority i.e., how much loss can be afforded when cells are have distance between them.
+
+L2- Optimize placement using estimated wire-length and capacitance
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/61900166-e631-443f-922c-2cba3cf8e41f)
+The wire that is needed to connect these cells will have Cap associated with them, the slew gets implemented because of this, therefore repeaters are needed to maintain signal integrity, ENG needs to decide on how many repeaters/buffers are needed. 
+
 
 
 Day 3
