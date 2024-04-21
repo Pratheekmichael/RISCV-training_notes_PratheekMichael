@@ -378,7 +378,25 @@ As the previous design had better numbers we can use the old settings with SYNTH
 
 SK3- Timing analysis with real clocks
 L1-setup timing analysis using real clock, L2-Hold time analysis using real clocks
-combinational delay + launch flop clock network delay < T + capture flop clock network delay
+combinational delay + launch flop clock network delay < T + capture flop clock network delay - setup time - uncertainity
+right hand side of the equation is data required time, left side is data arrival time, subtraction of these will give slack, which is expected to be 0 or positive
+
+combinational delay > hold delay (MUX2 delay)
+
+combinational delay + launch flop delay > Hold delay + capture flop delay + hold uncertainity
+
+left hand side of the equation is data arrival time and right hand side is data required time, slack should be 0 or positive
+
+L3 lab steps to analyze timing with real clocks using open STA, L4- lab steps to execute openSTA with right timing libraries and CTS assignment, L5- lab steps to observe impact of bigger CTS buffer on setup and hold timing
+
+
+
+
+
+
+
+
+
 
 
 
