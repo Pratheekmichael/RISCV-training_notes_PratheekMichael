@@ -240,23 +240,33 @@ the transition times are calculated from the plot
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/7c132afa-4dcb-43f3-a10b-bcbbd1804b6d)
 
 
-L3- Lab introduction to magic tool options and DRC rules
+L3- Lab introduction to magic tool options and DRC rules, L4- Lab introduction to sk130 pdks and steps to download labs, L5- Lab introduction to magic and steps to load sky130 tech rules, L6- Lab exercise to fix poly.9 error in sky130 tech file, L7-lab exercise to implement poly resistor spacing to diff and tap,L8-lab challenge exercise to describe DRC error as geometrical construct, L9
+
 Magic DRC engine
+Introduction to google/skywater pdk
 
-L4- Lab introduction to sk130 pdks and steps to download labs
+opencircuitdesign.com/magic --> using magic --> using technology files. Tutorial 2 and Tutorial 6 are important. Technology section --> Cifout and DRC section.
+Cif is nothing but Caltech intermediate format which is a human readable ASCI format, cif can be interchangably used with Tech files.
 
-L5- Lab introduction to magic and steps to load sky130 tech rules
+pdks from google that is open source is found in https://skywater-pdk.readthedocs.io/en/main/rules/periphery.html
 
-L6- Lab exercise to fix poly.9 error in sky130 tech file
+github link for google sw pdk is https://github.com/google/skywater-pdk
 
-L7-lab exercise to implement poly resistor spacing to diff and tap
+we need to get some layouts which instructor is talking about, we can download it once we are in the home directory and using the command "wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz", once we download it, we can go into that directory by "cd drc_tests", the technology file is in the same folder in the drc_tests
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/09f15216-8d72-4c61-9002-5aa91e18a1c5)
 
-L8-lab challenge exercise to describe DRC error as geometrical construct
+"snap int" command to be used in the tkcon window to snap the box edges to smaller nm ranges
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/6d7a9164-c8a2-4f92-af92-91bfb56b2663)
 
-L9-Lab challenge to find missing or incorrect rules and fix them
+loading poly.mag
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9f3ac97d-7b2b-4b2a-96ca-ded525fff4d3)
+this had to show rules voilation but did not
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/ca929961-6dbc-42b0-bc12-8d09dbe7d490)
+the rule can be added in the tech file by addition of poly voilation
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/8c34dcdb-6e7e-4161-8e7d-15fd11d308be)
 
-
-
+copy the 3 polyres and check the rules
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/33486f88-581b-40e7-964a-530aededc245)
 
 
 Day 4
