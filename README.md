@@ -144,16 +144,120 @@ and use the command "magic -T /home/vsduser/Desktop/work/tools/openlane_working_
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d6ef537a-1b57-4ad3-ab8e-896905df9fa4)
 Placed cells view
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/cc183e4d-91ac-4a06-a451-bbe56b3faf45)
+we have to exit the openlane and the docker view in order to avoid acitivity.
 
 SK3 Cell design and characterization
 
-L1- Inputs for cell design flow, L2- circuit design step, L3 - Layout design design step
+L1- Inputs for cell design flow, L2- circuit design step, L3 - Layout design design step, L4-typical characterization flow
 Library is a place where we keep all standard cells, which are buff, FF, AND, OR gates, these cells can be of varying dimesions which will vary the cells drive strength. The dimesions will cause the keep parameter changes, example, threshold change.
 
-The instructors courses, (1) circuit design and spice simulation, (2) custom layout has more information about the cell design flow.
-A rough idea for Cell design flow has (1) inputs: PDKS, DRC, LVS, library and user defined specs, SPICE model, (ENG: choose proper library cell) --> (2) Design steps: Circuit design, layout design, characterization (output of circuit design is circuit description language)
+The instructors courses, (1) circuit design/analysis and spice simulation, (2) custom layout has more information about the cell design flow.
+A rough idea for Cell design flow has (1) inputs: PDKS, DRC, LVS, library and user defined specs, SPICE model, (ENG: choose proper library cell) --> (2) Design steps: Circuit design, layout design, characterization (output of circuit design is circuit description language, output of layout design is GDS)), LEF, extracted spice netlist) --> (3) Ouput (given in the paranthesis of previous step)
+GUNA software generated timing, noise, power.libs
 
-Day 3
+SK4 General timing characterization paramters
+
+L1 - Timing threshold definition
+Slew low rise threshold: 20% of the max voltage
+slew high rise threshold: 80% of the max voltage
+similar terminology exists for the falling waveform or output waveform
+50% input waveform - 50% ouput waveform ==> rise delay
+
+L2 - Propagation delay and transition time
+Choice of threshold can avoid negative delays, negative delays can also be caused by wire delays.
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d07afa91-8061-465d-9e3d-724166fdf0a2)
+
+Day 3 - Design Library cell using Magic layout and ngspice characterization
+
+SK1 - Labs for CMOS inverter ngspice simulation
+
+L1- SPICE deck creation for CMOS inverter, L2- SPICE simiulation lab for CMOS inverter
+Spice deck is connectivity information about the net list, we need component values, W/L of CMOS, Capacitance of the load, VSS, VDD, the next step is to identify the nodes and name them.
+* is comments
+  M1 out in vdd vdd pmos W=xu L=yu--> M1 is between out and in nodes and VDD and VDD
+ ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/44e52652-02fc-4294-a014-41e409669fc5)
+.Lib "tmsc_025um_model.mod: CMOS_MODELS
+
+W/L for pmos > W/L for nmos for ideal situation
+
+L3 - Switching threshold Vm, L4- Static and dynamic simulation of CMOS inverter
+CMOS is a very robust device, even though we changed the Wp=2.5xWn, the waveform is very similar to wp=wn and the only differece will be in the switching threshold.
+Vm is the point where Vin=Vout, we basically draw a diag line on the output of the DC result and find the diag line intersection with waveform
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/7f6ee0c4-de6e-4f63-8a90-9750c7311d6f)
+Rise and fall delay can be calculated by peforming transient analysis which will be done in the labs
+
+L5 - lab steps to git clone vsdcelldesign
+go to the directory cd Desktop/work/tools/openlane_working_dir/openlane
+clone the repository, using the command "git clone https://github.com/nickson-jose/vsdstdcelldesign"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/bbdb1086-8768-4e45-91e5-933d1b85736f)
+go to the vsdstdcelldesign folder by using "cd vsdstdcelldesign"
+to copy the tech file, go to cd Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic and use the command "cp sky130A.tech /Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign/"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/cf934a22-771f-41ad-b405-c2337c7f6c7c)
+
+Sk2- inception of layout of CMOS fabrication process
+L1- create active regions, L2-formation of N and P well, L3- formation of gate terminal, L4 - Lightly doped drain, L5- source and drain formation, L7- higher level metal formation
+IC fabrication is explained here, 16 mask process
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/718f26ea-321d-4c94-a65c-d6d30cca09aa)
+
+L8- Lab intro to Sky130 basic layers layout and LEF using inverter
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d107477b-754d-40f3-bc21-f0f80144badc)
+selecting S multiple times will show the point connection
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/0c65f0a5-3046-4e6b-bac5-310517ebe793)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a49f95f8-432d-46f5-94c9-7f9d247fcabd)
+how to build an inverter from scratch is explained in https://github.com/nickson-jose/vsdstdcelldesign
+LEF- Library exchange format, does not have information about logic part, only the metal layers, PR boundary (VDD line and GND line), LEF protects the IP of the vendor, LEF is aka, frameview
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d7243f5b-a94c-461f-9ae8-a52c884b7134)
+the github link also explains step by step creation of an inverter in magic
+
+L9- Lab steps to create std cells layout and extract spice netlist
+tkcon window shows what are the tool DRC error, we need to make sure that final design is DRC=0
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/4d59ac2f-1376-45ff-b80b-50713a7f3bfc)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/258c5273-1cda-4c0f-af0e-ab710c447075)
+
+to extract spice file from magic, go to tkcon window, and use "extract all"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/504ac88b-0f94-4b73-a0e8-36e71ca58618)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/34448cd3-4afb-47e7-a719-edb66a479594)
+the command to extract parasitics will be "ext2spice cthresh 0 rthresh 0" & "ext2spice"to be executed in the tkcon window
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/2f6cb829-9beb-4be8-a347-a9b084d7fa6b)
+the extracted spice file is shown below
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/3dbf6a30-3683-40d7-9da3-158dbfc8efc8)
+
+SK3 - Sky130 Tech file labs
+
+L1- Labs steps to create final spice deck using sky130tech, L2- Lab steps to characterize inverter using sky130 model files
+pmos has model name as pshort
+nmos has model name as nshort
+grid value which was specified in the layout is
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/8e3783c3-f097-429f-aa23-e811ca3a5c86)
+define pmos and nmos from lib file
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/38296049-4e1d-47f6-97d3-0a0fba19bf93)
+to run the spice we go to the respective folder /Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign/ and run the command "ngspice sky130_inv.spice"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/30265be9-0d69-4a27-bc53-4c209e1d6981)
+we can plot the output using "plot y vs time a"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/12829363-72b1-4c0b-97f2-b13dce7edb03)
+the transition times are calculated from the plot
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/3d82e807-2872-4de7-b62b-a259229aaa47)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/7c132afa-4dcb-43f3-a10b-bcbbd1804b6d)
+
+
+L3- Lab introduction to magic tool options and DRC rules
+Magic DRC engine
+
+L4- Lab introduction to sk130 pdks and steps to download labs
+
+L5- Lab introduction to magic and steps to load sky130 tech rules
+
+L6- Lab exercise to fix poly.9 error in sky130 tech file
+
+L7-lab exercise to implement poly resistor spacing to diff and tap
+
+L8-lab challenge exercise to describe DRC error as geometrical construct
+
+L9-Lab challenge to find missing or incorrect rules and fix them
+
+
+
+
 
 Day 4
 
