@@ -374,5 +374,12 @@ We can save our old verilog file and make a copy of it,
 we can write_verilog /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/20-04_16-58/results/synthesis/picorv32a.synthesis.v
 As the previous design had better numbers we can use the old settings with SYNTH_STRATEGY having DELAY 3 and, in order to overwrite the result in the present folder, we can always use the command "prep -design picorv32a -tag 20-04_16-58 -overwrite", and use the lefs, rerun synthesis, rerun floorplan, and run CTS
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/09536521-5558-4cec-9278-7a3d0173bb4f)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9f65d826-c7c3-4749-b40a-09bb1f653bd3)
+
+SK3- Timing analysis with real clocks
+L1-setup timing analysis using real clock, L2-Hold time analysis using real clocks
+combinational delay + launch flop clock network delay < T + capture flop clock network delay
+
+
 
 Day 5
