@@ -1,6 +1,6 @@
 # Digital VLSI SoC design and Planning, RISCV-training_notes_PratheekMichael
 *Digital VLSI SoC design and Planning,RISCV training and lab details
-#Note: All snapshots are taken from the workshop with permission from Mr. Kunal Gosh.
+#Note: All snapshots are taken from the workshop with permission given by Mr. Kunal Ghosh.
 Day 1 - Inception of open-source EDA, openlane and Sky130PDK
 
 D1_SK1 How to talk to computers
