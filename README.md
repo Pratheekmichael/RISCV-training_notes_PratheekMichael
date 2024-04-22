@@ -439,3 +439,20 @@ use the command, "run_routing"
 routing takes the longest time to complete
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f6c16719-651a-4146-b49b-04a42eb33de5)
 
+SK3-Triton route
+L1, features, preprocessed route guide, L2, interguide connectivity and intra and inter layer routing, L3 triton route method to handle connectivity,L4 routing topology algorithm and final files list post route
+Triton route needs LEF, DEF< preprocessed route guides, it outputs detailed routing solution with optimized wire length and via count, the constraints are route guide honoring connecitivy constraints and design rules
+once the routing has been done we can see the layout using magic, from the latest results file after routing, and launching magic
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/5864cbe9-f0ae-49c5-a5f3-17e7b8fb77c2)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/1feacf8b-bbe5-45b2-b45d-0479ea4b3c9f)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/e1d44d9d-7503-426e-aabd-17a7092fc78e)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/e4052912-92e8-497f-9551-b5b36169c918)
+
+I did not have the spef extractor to tried to download and run the command to extract the files, however, it failed
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/c0eb9559-ab36-455a-bb3a-3933b5c9a497)
+I was informed that after the pdn we get the spef, so i used that
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/add870a4-7216-4e39-bd2b-41532a752147)
+and used that to perform the post route STA analysis and got the following slack (MET:))
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/72a4b11d-418d-4bd0-8f95-7ed3a3752a17)
+
+
