@@ -388,16 +388,46 @@ combinational delay + launch flop delay > Hold delay + capture flop delay + hold
 left hand side of the equation is data arrival time and right hand side is data required time, slack should be 0 or positive
 
 L3 lab steps to analyze timing with real clocks using open STA, L4- lab steps to execute openSTA with right timing libraries and CTS assignment, L5- lab steps to observe impact of bigger CTS buffer on setup and hold timing
+once in openlane folder, we can run "openroad"
+we have to read the lef, using "read_lef /openLANE_flow/designs/picorv32a/runs/20-04_16-58/tmp/merged.lef"
+we have to read the def file, "read_def /openLANE_flow/designs/picorv32a/runs/20-04_16-58/results/cts/picorv32a.cts.def"
+we create a db, "write_db pico_cts.db"
+we read the db, "read_db pico_cts.db"
+we read the verilog netlist, "read_verilog /openLANE_flow/designs/picorv32a/runs/20-04_16-58/results/synthesis/picorv32a.synthesis_cts.v"
+use "read_liberty $::env(LIB_SYNTH_COMPLETE)
+"link_design picorv32a", to the library
+link the sdc created,"read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc"
+use, "set_propagated_clock [all_clocks]"
+use, "report_checks -path _delay min_max -format full_clock_expanded -digits 4"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/85868157-481b-4a9e-8d83-463b460f064f)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a74ff9d0-9c1b-45d8-9b4f-a6ef1e9fd23f)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/523fdcd8-d049-41ab-93c0-a06ef564fb72)
+insturctor informed that triton CTS is analyzing for min and max columns instead of a simple column. we can rerun the result by removing buffer 1
+use, "set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]"
+use, "set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/220-04_16-58/results/placement/picorv32a.placement.def"
+use the read lef and def from above, write the database to a new file and read it, and read the verilog file, repeat the steps from above
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/b6f83eb6-7186-4a76-ab52-ac4dc9cbc8a1)
+reinsert clock buff 1
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/00d10064-b02e-4f65-9197-70754512cdb8)
 
+Day 5- Final steps for RTL2GDS using TritonRoute and openSTA
+SK1-Routing and design
+L1-into to maze routing, Lees algorithm,L2- continuation of L1, L3-DRC
+best route without lot of bends are chosen
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f1f933a5-a25a-4ae7-8983-4cfe6f0b9d2d)
+DRC has main limitation from Photolithography,therefore the wire width and pitch should be defined by PL, to avoid shorts we can take metals at different levels.
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/4b0d2839-6bdc-4b46-ad4f-01c5f433697d)
+with new metal layer we have to add via to connect the metal lines
+Parasitic extraction is the resistance and capacitance extraction out of the netlist
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/60f73183-a767-4ceb-a2e7-65fccf0c51c1)
 
+SK2- power distribution network and routing
+L1- lab to build power distribution network, L2-lab steps from power straps to std cell power, L3-basics of global and detailed routing and configure triton route
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/00bf5453-1c37-49b5-a849-3e75dd683113)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/6f0cfa77-9f0e-45e3-a7bb-8f72b10373cb)
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/bfb79771-869f-4106-9b41-b398c163d219)
+what is the last step of placement?
+echo $::env(CURRENT_DEF) will give the value of the last step
+use command, "gen_pdn"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/701b4cc7-d9f9-4648-bf86-869fdcf72d44)
 
-
-
-
-
-
-
-
-
-
-Day 5
