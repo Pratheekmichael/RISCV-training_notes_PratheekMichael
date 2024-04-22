@@ -1,5 +1,5 @@
 # RISCV-training_notes_PratheekMichael
-RISCV training and lab details
+**RISCV training and lab details
 Note: All snapshots are taken from the workshop with permission from Mr. Kunal Gosh.
 Day 1 - Inception of open-source EDA, openlane and Sky130PDK
 
