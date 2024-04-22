@@ -430,4 +430,12 @@ what is the last step of placement?
 echo $::env(CURRENT_DEF) will give the value of the last step
 use command, "gen_pdn"
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/701b4cc7-d9f9-4648-bf86-869fdcf72d44)
+strap explaination
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/c98ffd1f-d479-4cff-89f6-fe39226c3daa)
+we can view the layout after this step and see the staps placed
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a3cfd0c9-af50-4a97-a1c8-759f50043cf1)
+use the command, "run_routing"
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f03cb3fa-d71f-489d-b528-f7a46ed2847d)
+routing takes the longest time to complete
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f6c16719-651a-4146-b49b-04a42eb33de5)
 
