@@ -1,29 +1,29 @@
 # Digital VLSI SoC design and Planning, RISCV-training_notes_PratheekMichael
 *Digital VLSI SoC design and Planning,RISCV training and lab details
-#Note: All snapshots are taken from the workshop with permission given by Mr. Kunal Ghosh.
-Day 1 - Inception of open-source EDA, openlane and Sky130PDK
+*Note: All snapshots are taken from the workshop with permission given by Mr. Kunal Ghosh.
+## Day 1 - Inception of open-source EDA, openlane and Sky130PDK
 
-D1_SK1 How to talk to computers
+### D1_SK1 How to talk to computers
 
-L1 Intro to QFN-48 package, chip, die, pad, core, IP.
+#### L1 Intro to QFN-48 package, chip, die, pad, core, IP.
 
 The take away is that the processor is the brain of the arduino or an FPGA board and it needs to communicate with the interfaces. The chip design is the main focus of the course, a package can be synonymously called as a chip, so when QFN-48 Quad Flat No lead package is spoken about, we can understand this lingo. the package pins can be decided by the application board, io chip enables communication with outside signal to the chip. IO pins are connected to pads.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/52501a88-d0ea-4c2d-b2d1-a598e531a845)
 Foundry IP, is Foundry intellectual property which is protected by the respective foundry. VLSI ENGs needs to communicate with the foundry, to build the chip. Chip contains Macros and Foundry IP.
 
-L2- RSIC V architecture
+#### L2- RSIC V architecture
 
 Assembly lang program which is used to talk to computers. Code on computer is complied in RISCV assembly Language program which is converted to RTL which converts it to machine language which will be processed by the computer in order to test the layouts which are being designed. 
 In short, RISC V architecture --> implementation (picorv32 cpu core) (RTL) --> layout (qflow) desing & test.
 
-L3- software apps to Hardware
+#### L3- software apps to Hardware
 
 apps --> system software (OS (program lang)--> compilter (RISC-V/ARM, ISA)--> assembler (converts to Machine language program)) --> Hardware (RISCV CPU core or ARM CPU)
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/c7b06a4e-a82d-43e6-a0a1-61e052cb3e7d)
 
-D1-SK2 - SoC Design and Openlane
+### D1-SK2 - SoC Design and Openlane
 
-L1 - Intro to components of open-source digital ASIC design
+#### L1 - Intro to components of open-source digital ASIC design
 
 In 1979 Lynn Conway & Carver Mead seperated the design from technology and pioneered Structure design methodology which is based on Lambda design rules --> this led to Fabless company.
 PDK = process design kit which comprises of DRC, LVS, device models, Standard cell libraries, IO libraries which can be used by EDA to model a fabrication process during IC design.
@@ -33,29 +33,29 @@ To understand why 130nm is exiting when we have reached less than 10nm tech, see
 130nm is 6% which is almost $4bn market share.
 ASIC flow objective is to take RTL (register transfer level) to GDSII, aka, Automated PnR or physical implementation.
 
-L2 - Simplified RTL2GDS flow
+#### L2 - Simplified RTL2GDS flow
 
 RTL --> synthesis --> floor planning or power planning --> placement --> Clock tree synthesis (goal: min skew) --> routing --> signoff --> GDSII
 Before signoff, we do 
 Physical verifications -- DRC, Layout vs schematic (LVS) checks and Timing verification (STA - static timing analysis)
 
-L3 - Introduction to openlane & strive chipsets
+#### L3 - Introduction to openlane & strive chipsets
 
 Openlane is Open source ASIC design implementation flow. Goal of this is to produce a clean GDSII with no human intervention, that means no voilations in DRC, LVS, or Timing. Two modes of operation: automonomous and interactive. 
 
-L4 - Intro to openlane detailed ASIC flow
+#### L4 - Intro to openlane detailed ASIC flow
 
 Design RTL --> RTL synthesis --> STA --> Design for Test (DFT) -->  physical implementation (using operoad app) --> Logic equivalence check --> Detailed routing --> if needed can deal with antenna rule voilation by insertion of fake antenna diode next to every cell input to check voilation ( if yes, a diode can be palced to mitigate this) (magic can be used) --> STA, DRC & LVS (magic can be used for DRC and spice extraction)
 
-D1-SK3 Opensource EDA tools
+### D1-SK3 Opensource EDA tools
 
-L1 - Openlane directory structure
+#### L1 - Openlane directory structure
 
 Ubuntu help
 ls --help will list all cmds what do they do
 Sky130A --> libs.tech & libs.ref which has files associated with technology and process respectively. we will be working with  sky130_fd_sc_hd file {130nm, fd-skywater foundary, sc-standard cell, hd-high density}
 
-L2- Design prep step,
+#### L2- Design prep step,
 
 The highest priority .tcl file is sky130A_sky130_fd_sc_hd_config.tcl which will overwrite the config.tcl settings, ex: clock period.
 In the openlane directory, which is cd Desktop/work/tools/openlane_working_dir/openlane, we invoke the command "docker". docker apparently is a short for the command docker run -it -v $(pwd_:/openLANE_flow -v $PDK_ROOT:$PDK_ROOT -e PDK_ROOT=$PRDK_ROOT -u $(id -u $USER):$(id -g $USER) openlane:rc2 (not verified as copied from video, version might be v0.21)
@@ -63,7 +63,7 @@ the next command is "./flow.tcl -interactive", once Open lane launches, we impor
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/186f215d-ad18-4148-87de-31c24bf7e069)
 the next step is to prep design, to have design specific files generated in the Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a folder. the command for  this is "prep -design picorv32a"
 
-L3- Review files post design prep and run synthesis
+#### L3- Review files post design prep and run synthesis
 
 so in the Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a a new runs folder got created due to the design prep command we executed, our later synthesis file will be in this folder.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/3304a0b9-a439-4f02-9fae-c3a5fb160e88)
@@ -73,7 +73,7 @@ openalne efabless information is available on github at https://github.com/efabl
 Once the synthesis is succesfully completed, we can use "exit" command to exit from openlane and "exit" to exit the docker, this will ensure nothing is active in the background.
 
 
-L4-openlane project link 
+#### L4-openlane project link 
 
 To install the openlane in ubuntu or VB from scratch, we first install git "sudo apt install git" and use the git clone "[url](https://github.com/efabless/OpenLane.git)" command to copy over the openlane files from the github link, https://github.com/efabless/openlane
 Open lane flow is shown in the greyed box of this flow
@@ -81,7 +81,7 @@ Open lane flow is shown in the greyed box of this flow
 command structure has to follow a flow, synthesis-->floorplan-->placement-->cts-->routing, if this is not followed the flow will fail to generate output. A fully automation of these commands can be done by the command "./flow.tcl -design picorv32a" the right part of the command is the design name.
 On youtube, it is recommended to watch the fossi-dialup videos by Tim Ansell, and Mohamed Shalan which is regarding Skywater PDK and Open lane respectively.
 
-L5: Steps to characterize the synthesis results
+#### L5: Steps to characterize the synthesis results
 
 The task is to find the flop ratio = # of D flip flops/ # of cells. In the synthesis which was run the ratio is 10.84%.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/0a3e46ac-d981-4db9-9cf6-96b04c8f7d0b)
@@ -90,33 +90,33 @@ The results folder will have the synthesized checklist
 The synthesis statistic report gives us the info about the flop ratio again.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/4a3402eb-878f-4fba-ac5e-0533096ccf0d)
 
-Day 2 - Good floorplan vs bad floorplan and introduction to library cells
+## Day 2 - Good floorplan vs bad floorplan and introduction to library cells
 
-Sk1 - chip floor planning considerations
+### Sk1 - chip floor planning considerations
 
-L1 - Utilization factor and aspect ratio
+#### L1 - Utilization factor and aspect ratio
 
 Dimension of the standard cells are the feature which is of interest to find the total area of the standard cells inside the netlist. A silicon wafer will consider multiple die, a die has a core which has the logic built on it. Utilization factor(UF) = area occupied by the netlist/ area of the core. If UF=1 then core is completely utilized and additional logic cannot be necessary. Aspect Ratio = Height of the die/ width of die, if AR 1, then its a square. example width of core is 4 unit and length is 2 unit, UF=0.5, AR=0.5.
 
-L2 - Concept of preplaced cells.
+#### L2 - Concept of preplaced cells.
 
 Preplaced cells, a combinational logic output can be implemented in the form of gates, split the gates into blocks,now the io for these blocks need to be connected to regenerate the combination logic, ex for this is memory, clock gating cells, comparator, MUX, these are called preplaced cells. These IPs are palced in user defined location prior to the automated PNR flow, hence they are called preplaced cells. The automated PNR tool cannot move preplaced cells, the PNR tool has to go around these cells to do its function.
 
-L3 - De-coupling capacitors
+#### L3 - De-coupling capacitors
 
 Why do we need Decoup capacitor? When a gate switches, the supply voltage needs to provide the charge required, the VDD needs to provide this, VSS needs to take in the discharge current. The VDD can have multiple voltage drop due to practical factors like resistance and inductance, therefore, VDD will now have diminished to VDD' which is not the same as VDD. if the VDD' is in the undefined region of the noise margin, then there is a problem for the circuit to design what charge it is getting. Therefore, we add decoupling capacitor to decouple the the circuit from the power supply, this will avoid voltage drop. After the decoup is added, when there is switching activity the decoup cap provides the charge and will replinsh itself when the activity is not done. Therefore, decoupling capacitor is placed in between preplaced cells.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/e7fd48f7-936d-4887-83ec-6d72d49568a6)
 
-L4 - Power planning
+#### L4 - Power planning
 
 Macros needing power which is tapped from VDD. When a 16 bit bus discharges all at once, there is a ground bounce. When these 16 bit bus caps require to charge at once, then it will need power all at once, which will cause voltage droop. Therefore, instead of one single power supply point, we can setup multiple power supply pins or points which is similar to,
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a0547956-feff-4cc4-b791-317dff2b15e7)
 
-L5 - Pin placement and logical cell palcement
+#### L5 - Pin placement and logical cell palcement
 
 Netlist - connectivity information between different gates which is defined in verilog HDL. The pins are placed in the die area outside the core and it will be fixed in this place. Frontend team - netlist connectivity and backend team - pin placement, therefore a proper design knowledge is needed between both teams. Clk ports are a bit thicker, to get least resistance. A logical cell blockage is done in order to make sure once the io pins are placed, nothing is placed in that area by the PNR s/w.
 
-L6 - steps to run floorplan using OPENLANE
+#### L6 - steps to run floorplan using OPENLANE
 
 After synthesis the next step is the flooplan. PNR flow is an iterative flow which needs certain parameters to be active at certain steps, therfore it is the ENGs decision to make use of appropriate parameters. In Desktop/work/tools/openlane_working_dir/openlane/configuration folder there is a readme.md which will explain about all the parameters.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f23bd0ad-55fc-4d1a-9a4f-204ecc51df21)
@@ -126,7 +126,7 @@ The next command is "./flow.tcl -interactive", once Open lane launches, we impor
 The next step is to prep design, to have design specific files generated in the Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a folder. the command for  this is "prep -design picorv32a", followed by the command "run_synthesis" and the command "run_floorplan"
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f6bbbed9-5f6d-49f9-a435-ced986510fb8)
 
-L7, L8- REview flooplan layout in Magic
+#### L7, L8- REview flooplan layout in Magic
 
 the flooplan.def (design exchange format) is populated in the results folder.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9a677e8d-0235-4231-a339-fcc8ca986396)
@@ -138,24 +138,24 @@ and use the command
 to zoom, use the left and right click of the mouse to define a box and z to zoom in and to select a cell use s after highlighting on the cell use the command "what" in the tkcon window to see what is the selected cell.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9542f146-da54-4783-8ded-c04e05233449)
 
-SK2- Library Binding and placement
+### SK2- Library Binding and placement
 
-L1 - Netlist binding and initial place design
+#### L1 - Netlist binding and initial place design
 In theory the AND gate may look different than when it is designed in layout, the layout has dimensions which can be used by ENGs. These netlist blocks can be found in Standard cell library, the library will also have various falvors of each cell, i.e., bigger dimensions of the same cells, these bigger cells might improve the design at the cost of the area utilized.
 Placement will be with respect the input and output pins and also the netlist priority i.e., how much loss can be afforded when cells are have distance between them.
 
-L2- Optimize placement using estimated wire-length and capacitance
+#### L2- Optimize placement using estimated wire-length and capacitance
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/61900166-e631-443f-922c-2cba3cf8e41f)
 The wire that is needed to connect these cells will have Cap associated with them, the slew gets implemented because of this, therefore repeaters are needed to maintain signal integrity, ENG needs to decide on how many repeaters/buffers are needed. 
 
-L3- final placement optimization, discusses the buffer placement by estimated wire length
+#### L3- final placement optimization, discusses the buffer placement by estimated wire length
 
-L4- Need for libraries and characterization
+#### L4- Need for libraries and characterization
 
 Logic synthesis --> import netlist of LS and do --> floorplanning --> placement (optimization of netlist placemenent) --> clock tree synthesis --> routing stage (maze routing) --> Static timing analysis (setup time and hold time) --> sign off
 Collection of gates are called library.
 
-L5 - Congestion aware placement using replace
+#### L5 - Congestion aware placement using replace
 
 When run placement command is executed, a global placement happens, which has HPWL half parameter wirelength which needs to be optimized.
 the next command in the flow will be "run_placement"
@@ -167,34 +167,34 @@ Placed cells view
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/cc183e4d-91ac-4a06-a451-bbe56b3faf45)
 we have to exit the openlane and the docker view in order to avoid acitivity.
 
-SK3 Cell design and characterization
+### SK3 Cell design and characterization
 
-L1- Inputs for cell design flow, L2- circuit design step, L3 - Layout design design step, L4-typical characterization flow
+#### L1- Inputs for cell design flow, L2- circuit design step, L3 - Layout design design step, L4-typical characterization flow
 Library is a place where we keep all standard cells, which are buff, FF, AND, OR gates, these cells can be of varying dimesions which will vary the cells drive strength. The dimesions will cause the keep parameter changes, example, threshold change.
 
 The instructors courses, (1) circuit design/analysis and spice simulation, (2) custom layout has more information about the cell design flow.
 A rough idea for Cell design flow has (1) inputs: PDKS, DRC, LVS, library and user defined specs, SPICE model, (ENG: choose proper library cell) --> (2) Design steps: Circuit design, layout design, characterization (output of circuit design is circuit description language, output of layout design is GDS)), LEF, extracted spice netlist) --> (3) Ouput (given in the paranthesis of previous step)
 GUNA software generated timing, noise, power.libs
 
-SK4 General timing characterization paramters
+### SK4 General timing characterization paramters
 
-L1 - Timing threshold definition
+#### L1 - Timing threshold definition
 
 Slew low rise threshold: 20% of the max voltage
 slew high rise threshold: 80% of the max voltage
 similar terminology exists for the falling waveform or output waveform
 50% input waveform - 50% ouput waveform ==> rise delay
 
-L2 - Propagation delay and transition time
+#### L2 - Propagation delay and transition time
 
 Choice of threshold can avoid negative delays, negative delays can also be caused by wire delays.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d07afa91-8061-465d-9e3d-724166fdf0a2)
 
-Day 3 - Design Library cell using Magic layout and ngspice characterization
+## Day 3 - Design Library cell using Magic layout and ngspice characterization
 
-SK1 - Labs for CMOS inverter ngspice simulation
+### SK1 - Labs for CMOS inverter ngspice simulation
 
-L1- SPICE deck creation for CMOS inverter, L2- SPICE simiulation lab for CMOS inverter
+#### L1- SPICE deck creation for CMOS inverter, L2- SPICE simiulation lab for CMOS inverter
 
 Spice deck is connectivity information about the net list, we need component values, W/L of CMOS, Capacitance of the load, VSS, VDD, the next step is to identify the nodes and name them.
 * is comments
@@ -204,14 +204,14 @@ Spice deck is connectivity information about the net list, we need component val
 
 W/L for pmos > W/L for nmos for ideal situation
 
-L3 - Switching threshold Vm, L4- Static and dynamic simulation of CMOS inverter
+#### L3 - Switching threshold Vm, L4- Static and dynamic simulation of CMOS inverter
 
 CMOS is a very robust device, even though we changed the Wp=2.5xWn, the waveform is very similar to wp=wn and the only differece will be in the switching threshold.
 Vm is the point where Vin=Vout, we basically draw a diag line on the output of the DC result and find the diag line intersection with waveform
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/7f6ee0c4-de6e-4f63-8a90-9750c7311d6f)
 Rise and fall delay can be calculated by peforming transient analysis which will be done in the labs
 
-L5 - lab steps to git clone vsdcelldesign
+#### L5 - lab steps to git clone vsdcelldesign
 
 go to the directory cd Desktop/work/tools/openlane_working_dir/openlane
 clone the repository, using the command "git clone https://github.com/nickson-jose/vsdstdcelldesign"
@@ -220,13 +220,13 @@ go to the vsdstdcelldesign folder by using "cd vsdstdcelldesign"
 to copy the tech file, go to cd Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic and use the command "cp sky130A.tech /Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign/"
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/cf934a22-771f-41ad-b405-c2337c7f6c7c)
 
-Sk2- inception of layout of CMOS fabrication process
-L1- create active regions, L2-formation of N and P well, L3- formation of gate terminal, L4 - Lightly doped drain, L5- source and drain formation, L7- higher level metal formation
+### Sk2- inception of layout of CMOS fabrication process
+#### L1- create active regions, L2-formation of N and P well, L3- formation of gate terminal, L4 - Lightly doped drain, L5- source and drain formation, L7- higher level metal formation
 
 IC fabrication is explained here, 16 mask process
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/718f26ea-321d-4c94-a65c-d6d30cca09aa)
 
-L8- Lab intro to Sky130 basic layers layout and LEF using inverter
+#### L8- Lab intro to Sky130 basic layers layout and LEF using inverter
 
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d107477b-754d-40f3-bc21-f0f80144badc)
 selecting S multiple times will show the point connection
@@ -237,7 +237,7 @@ LEF- Library exchange format, does not have information about logic part, only t
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d7243f5b-a94c-461f-9ae8-a52c884b7134)
 the github link also explains step by step creation of an inverter in magic
 
-L9- Lab steps to create std cells layout and extract spice netlist
+#### L9- Lab steps to create std cells layout and extract spice netlist
 
 tkcon window shows what are the tool DRC error, we need to make sure that final design is DRC=0
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/4d59ac2f-1376-45ff-b80b-50713a7f3bfc)
@@ -251,9 +251,9 @@ the command to extract parasitics will be "ext2spice cthresh 0 rthresh 0" & "ext
 the extracted spice file is shown below
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/3dbf6a30-3683-40d7-9da3-158dbfc8efc8)
 
-SK3 - Sky130 Tech file labs
+### SK3 - Sky130 Tech file labs
 
-L1- Labs steps to create final spice deck using sky130tech, L2- Lab steps to characterize inverter using sky130 model files
+#### L1- Labs steps to create final spice deck using sky130tech, L2- Lab steps to characterize inverter using sky130 model files
 
 pmos has model name as pshort
 nmos has model name as nshort
@@ -270,7 +270,7 @@ the transition times are calculated from the plot
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/7c132afa-4dcb-43f3-a10b-bcbbd1804b6d)
 
 
-L3- Lab introduction to magic tool options and DRC rules, L4- Lab introduction to sk130 pdks and steps to download labs, L5- Lab introduction to magic and steps to load sky130 tech rules, L6- Lab exercise to fix poly.9 error in sky130 tech file, L7-lab exercise to implement poly resistor spacing to diff and tap,L8-lab challenge exercise to describe DRC error as geometrical construct, L9
+#### L3- Lab introduction to magic tool options and DRC rules, L4- Lab introduction to sk130 pdks and steps to download labs, L5- Lab introduction to magic and steps to load sky130 tech rules, L6- Lab exercise to fix poly.9 error in sky130 tech file, L7-lab exercise to implement poly resistor spacing to diff and tap,L8-lab challenge exercise to describe DRC error as geometrical construct, L9
 
 Magic DRC engine
 Introduction to google/skywater pdk
@@ -298,11 +298,11 @@ the rule can be added in the tech file by addition of poly voilation
 copy the 3 polyres and check the rules
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/33486f88-581b-40e7-964a-530aededc245)
 
-Day 4 - Pre layout timing analysis and importance of good clock tree
+## Day 4 - Pre layout timing analysis and importance of good clock tree
 
-Sk1- Timing modelling using delay tables
+### Sk1- Timing modelling using delay tables
 
-L1- lab steps to convert grid info to track info, L2 - Lab steps to convert magic layout to std cell LEF, L3 - Introduction to timing libs and steps to include new cell in synthesis
+#### L1- lab steps to convert grid info to track info, L2 - Lab steps to convert magic layout to std cell LEF, L3 - Introduction to timing libs and steps to include new cell in synthesis
 
 We have done design setup, synthesis, floorplan, extracted spice model.
 2 rules to follow,
@@ -339,12 +339,12 @@ we need to go to the openlane directory, cd Desktop/work/tools/openlane_working_
 we invoke the docker, "./flow.tcl -interactive", "package require openlane 0.9, "prep -design picorv32a", "set lefs [glob $::env(DESIGN_DIR)/src/*.lef}","add_lefs -src $lefs", and run_synthesis
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/dfea9a28-3a63-4557-b0d0-b1c6180c93c8)
 
-L4- Introduction to delay tables L5- Delay table usage part 1, L6- Delay table usage part 2
+#### L4- Introduction to delay tables L5- Delay table usage part 1, L6- Delay table usage part 2
 
 Different sized buffer has different delay tables, whose values are characterized and can be extrapolated.
 Observations: 1) 2 levels of buffering, 2) at every level, each node should drive same load 3) every level should have identical buffer.
 
-L7- Lab steps to configure synthesis settings to fix slack and include vsdinv
+#### L7- Lab steps to configure synthesis settings to fix slack and include vsdinv
 
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/878b6bc7-b0b4-456f-b93c-0d89655af640)
 when we look at merged.lef folder, we can see that the custom inverter cell was placed in the design
@@ -365,15 +365,15 @@ we can use the command expand in the tkcon window and see the LEF, this shows th
 another view
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/8ef0ee59-4c73-4306-aba8-6610a9e3747a)
 
-SK2- timing analysis with ideal clocks using open STA
-L1-setup timing analysis and introduction to flip flop setup time, L2-Introduction to clock jitter and uncertainity
+### SK2- timing analysis with ideal clocks using open STA
+#### L1-setup timing analysis and introduction to flip flop setup time, L2-Introduction to clock jitter and uncertainity
 
 Combinational delay < (T- setup time)
 jitter: temporary variation of clock period, adding uncertainity to the above equation
 combinational delay <(T- setup time -setup uncertainity)
 Combinational delay will involves the cell delay+wire length delay as well
 
-L3- Lab steps to configure open STA for post -synth timing analysis, L4-lab steps to optimize synthesis to reduce setup voilation, L5- Lab steps to do basic timing ECO
+#### L3- Lab steps to configure open STA for post -synth timing analysis, L4-lab steps to optimize synthesis to reduce setup voilation, L5- Lab steps to do basic timing ECO
 
 Defining the pre_sta.conf (picture collected post simulation)
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/504d0626-86fc-446d-9481-c233cbfe7acc)
@@ -394,8 +394,8 @@ attempted few more iterations
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a1563f18-fb8a-4dbb-92d2-a4b22ae99835)
 Using the delay 3 will reduce the tns and wns and avoid slack
 
-SK3 - CTS triton CTS and signal integrity
-L1 - Clock tree routing and buffering using H tree algorithm, L2-cross talk and clock net shielding
+### SK3 - CTS triton CTS and signal integrity
+#### L1 - Clock tree routing and buffering using H tree algorithm, L2-cross talk and clock net shielding
 
 we expect skew ~0 or close to 0
 H tree uses a midpoint strategy and splits, in order to give the timing requirement for the flops at the same time
@@ -404,7 +404,7 @@ Since the clock is signal is provided by wires, we need to add buffers, for sign
 Even though we add buffer, we need shielding to protect the integrity of these clock nets, therefore we need clock net shielding, this is to avoid glitch and delta delay. Giltch can reset memory chip therefore need to be addressed. we have to shield couple of other wiring which are important as well in over to prevent the glitch or cross talk
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/15fb841b-deb7-435d-ba05-9fb854976984)
 
-L3 lab steps to run CTS using Triton CTS L4 Lab steps to verify CTS runs
+#### L3 lab steps to run CTS using Triton CTS L4 Lab steps to verify CTS runs
 
 We can save our old verilog file and make a copy of it,
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/2916069d-b565-4e90-bb67-571914232aea)
@@ -413,8 +413,8 @@ As the previous design had better numbers we can use the old settings with SYNTH
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/09536521-5558-4cec-9278-7a3d0173bb4f)
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9f65d826-c7c3-4749-b40a-09bb1f653bd3)
 
-SK3- Timing analysis with real clocks
-L1-setup timing analysis using real clock, L2-Hold time analysis using real clocks
+### SK3- Timing analysis with real clocks
+#### L1-setup timing analysis using real clock, L2-Hold time analysis using real clocks
 
 combinational delay + launch flop clock network delay < T + capture flop clock network delay - setup time - uncertainity
 right hand side of the equation is data required time, left side is data arrival time, subtraction of these will give slack, which is expected to be 0 or positive
@@ -425,7 +425,7 @@ combinational delay + launch flop delay > Hold delay + capture flop delay + hold
 
 left hand side of the equation is data arrival time and right hand side is data required time, slack should be 0 or positive
 
-L3 lab steps to analyze timing with real clocks using open STA, L4- lab steps to execute openSTA with right timing libraries and CTS assignment, L5- lab steps to observe impact of bigger CTS buffer on setup and hold timing
+#### L3 lab steps to analyze timing with real clocks using open STA, L4- lab steps to execute openSTA with right timing libraries and CTS assignment, L5- lab steps to observe impact of bigger CTS buffer on setup and hold timing
 
 once in openlane folder, we can run "openroad"
 we have to read the lef, using "read_lef /openLANE_flow/designs/picorv32a/runs/20-04_16-58/tmp/merged.lef"
@@ -449,9 +449,9 @@ use the read lef and def from above, write the database to a new file and read i
 reinsert clock buff 1
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/00d10064-b02e-4f65-9197-70754512cdb8)
 
-Day 5- Final steps for RTL2GDS using TritonRoute and openSTA
-SK1-Routing and design
-L1-into to maze routing, Lees algorithm,L2- continuation of L1, L3-DRC
+## Day 5- Final steps for RTL2GDS using TritonRoute and openSTA
+### SK1-Routing and design
+#### L1-into to maze routing, Lees algorithm,L2- continuation of L1, L3-DRC
 
 best route without lot of bends are chosen
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f1f933a5-a25a-4ae7-8983-4cfe6f0b9d2d)
@@ -461,8 +461,8 @@ with new metal layer we have to add via to connect the metal lines
 Parasitic extraction is the resistance and capacitance extraction out of the netlist
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/60f73183-a767-4ceb-a2e7-65fccf0c51c1)
 
-SK2- power distribution network and routing
-L1- lab to build power distribution network, L2-lab steps from power straps to std cell power, L3-basics of global and detailed routing and configure triton route
+### SK2- power distribution network and routing
+#### L1- lab to build power distribution network, L2-lab steps from power straps to std cell power, L3-basics of global and detailed routing and configure triton route
 
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/00bf5453-1c37-49b5-a849-3e75dd683113)
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/6f0cfa77-9f0e-45e3-a7bb-8f72b10373cb)
@@ -480,8 +480,8 @@ use the command, "run_routing"
 routing takes the longest time to complete
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f6c16719-651a-4146-b49b-04a42eb33de5)
 
-SK3-Triton route
-L1, features, preprocessed route guide, L2, interguide connectivity and intra and inter layer routing, L3 triton route method to handle connectivity,L4 routing topology algorithm and final files list post route
+### SK3-Triton route
+#### L1, features, preprocessed route guide, L2, interguide connectivity and intra and inter layer routing, L3 triton route method to handle connectivity,L4 routing topology algorithm and final files list post route
 
 Triton route needs LEF, DEF< preprocessed route guides, it outputs detailed routing solution with optimized wire length and via count, the constraints are route guide honoring connecitivy constraints and design rules
 once the routing has been done we can see the layout using magic, from the latest results file after routing, and launching magic
