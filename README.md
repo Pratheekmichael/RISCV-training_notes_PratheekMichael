@@ -900,5 +900,5 @@ and used that to perform the post route STA analysis and got the following slack
 - [magic link in open circuit] http://www.opencircuitdesign.com/magic/index.html
 - [skywater pdks docs] https://skywater-pdk.readthedocs.io/en/main/rules/periphery.html#poly
 - [inverter design] https://github.com/nickson-jose/vsdstdcelldesign/tree/master
--  [docs formatting in github] https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-    formatting-syntax
+-  [docs formatting in github] https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
 - [doc formatting for syntax] https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks
