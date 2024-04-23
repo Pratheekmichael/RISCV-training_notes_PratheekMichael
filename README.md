@@ -890,3 +890,15 @@ and used that to perform the post route STA analysis and got the following slack
 
 # POST WORKSHOP ACKNOWLEDGMENT
 - I want to thank the instructors, Mr.Kunal Ghosh, Mr.Nickson Jose, Mr.Mohamad Shalan & Mr.Tim Edwards for conveying this valuable information in this workshop.
+
+# Weblinks used
+
+- [github skywater pdk] https://github.com/google/skywater-pdk
+- [notes link for PD] https://www.vlsisystemdesign.com/wp-content/uploads/2017/07/Introduction-to-Industrial-Physical-Design-Flow.pdf
+- [github efabless] https://github.com/efabless/openlane
+- [open lane] https://openlane.readthedocs.io/en/latest/flow_overview.html
+- [magic link in open circuit] http://www.opencircuitdesign.com/magic/index.html
+- [skywater pdks docs] https://skywater-pdk.readthedocs.io/en/main/rules/periphery.html#poly
+- [inverter design] https://github.com/nickson-jose/vsdstdcelldesign/tree/master
+-  [docs formatting in github] https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-    formatting-syntax
+- [doc formatting for syntax] https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks
