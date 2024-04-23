@@ -203,23 +203,23 @@ In `Desktop/work/tools/openlane_working_dir/openlane/configuration` folder there
 The `.tcl` priority for `floorplan.tcl` (system default) will be the least and will be superceeded design by `config.tcl` and the `sky130A_sky130_fd_sc_hd_config.tcl`
 
 The next step is the run the floorplan, in the openlane directory, which is 
-```
+```bash
 cd Desktop/work/tools/openlane_working_dir/openlane
 ```
 we invoke the command 
-```
+```tcl
 docker
 ```
 The next command is 
-```
+```tcl
 ./flow.tcl -interactive
 ```
 once Open lane launches, we import packages required to run this and the command is 
-```
+```tcl
 package required openlane 0.9
 ```
 The next step is to prep design, to have design specific files generated in the `Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a` folder. the command for  this is 
-```ubuntu
+```tcl
 prep -design picorv32a
 run_synthesis
 run_floorplan
@@ -232,14 +232,14 @@ run_floorplan
 - the `flooplan.def `(design exchange format) is populated in the results folder.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9a677e8d-0235-4231-a339-fcc8ca986396)
 To see actual layout in magic, go to the respective directory
-```cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/14-04_23-16/results/floorplan/```
-and use the command
-```
+```bash
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/14-04_23-16/results/floorplan/
+
 magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &" to get the layout after floorplan sim
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/86b5adc4-b228-4e3a-b9c2-e0fca66dbece)
 to zoom, use the left and right click of the mouse to define a box and z to zoom in and to select a cell use s after highlighting on the cell use the command 
-```
+```bash
 what
 ```
 in the tkcon window to see what is the selected cell.
@@ -266,14 +266,14 @@ Collection of gates are called library.
 
 When run placement command is executed, a global placement happens, which has HPWL half parameter wirelength which needs to be optimized.
 the next command in the flow will be 
-```
+```tcl
 run_placement
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/28a38c0e-bb50-4e58-8047-8d332bdf20e3)
 In order to load the gnerated file go to the directory 
-```cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/16-04_01-39/results/placement/```
-and use the command 
-```
+```bash
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/16-04_01-39/results/placement/
+
 magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
 ```
 to view layout post placement
@@ -329,24 +329,24 @@ Rise and fall delay can be calculated by peforming transient analysis which will
 #### L5 - lab steps to git clone vsdcelldesign
 
 go to the directory 
-```
+```bash
 cd Desktop/work/tools/openlane_working_dir/openlane
 ```
 clone the repository, using the command 
-```
+```bash
 git clone https://github.com/nickson-jose/vsdstdcelldesign
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/bbdb1086-8768-4e45-91e5-933d1b85736f)
 go to the vsdstdcelldesign folder by using 
-```
+```bash
 cd vsdstdcelldesign
 ```
 to copy the tech file, go to 
-```
+```bash
 cd Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic
 ```
 and use the command 
-```
+```bash
 cp sky130A.tech /Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign/
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/cf934a22-771f-41ad-b405-c2337c7f6c7c)
@@ -375,11 +375,13 @@ tkcon window shows what are the tool DRC error, we need to make sure that final 
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/258c5273-1cda-4c0f-af0e-ab710c447075)
 
 to extract spice file from magic, go to tkcon window, and use 
-```extract all```
+```tcl
+extract all
+```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/504ac88b-0f94-4b73-a0e8-36e71ca58618)
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/34448cd3-4afb-47e7-a719-edb66a479594)
 the command to extract parasitics will be 
-```
+```tcl
 ext2spice cthresh 0 rthresh 0
 ext2spice
 ```
@@ -399,12 +401,12 @@ grid value which was specified in the layout is
 define pmos and nmos from lib file
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/38296049-4e1d-47f6-97d3-0a0fba19bf93)
 to run the spice we go to the respective folder ```/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign/``` and run the command 
-```
+```bash
 ngspice sky130_inv.spice
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/30265be9-0d69-4a27-bc53-4c209e1d6981)
 we can plot the output using 
-```
+```bash
 plot y vs time a
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/12829363-72b1-4c0b-97f2-b13dce7edb03)
@@ -426,23 +428,25 @@ pdks from google that is open source is found in [skywater pdk link] https://sky
 github link for google sw pdk is [skywater pdk github link] https://github.com/google/skywater-pdk
 
 we need to get some layouts which instructor is talking about, we can download it once we are in the home directory and using the command 
-```
+```bash
 wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz
 ```
 once we download it, we can go into that directory by 
-```
+```bash
 cd drc_tests
 ```
 the technology file is in the same folder in the drc_tests
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/09f15216-8d72-4c61-9002-5aa91e18a1c5)
 
-```
+```tcl
 snap int
 ```
 command to be used in the tkcon window to snap the box edges to smaller nm ranges
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/6d7a9164-c8a2-4f92-af92-91bfb56b2663)
 
-```loading poly.mag```
+```tcl
+loading poly.mag
+```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9f3ac97d-7b2b-4b2a-96ca-ded525fff4d3)
 this had to show rules voilation but did not
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/ca929961-6dbc-42b0-bc12-8d09dbe7d490)
@@ -466,7 +470,7 @@ if we see the file ```tracks.info```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/1e35ee11-6705-4e40-93fe-9a8a10c84547)
 tracks are used for routing stages, routes can go over the tracks. we need to see that the inverter layout pins are on the tracks definted, for that we have to change the grid spacing to the one shown in the track info, and check if the pins are on the intersection,
 in the tkcon window, use 
-```
+```tcl
 grid 0.46um 0.34um 0.23um 0.17um
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/0bc1c8b0-0945-4bc2-b6ff-5f25b31328be)
@@ -476,20 +480,27 @@ Port definition needs to be done next, did not implement because its already don
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f3edae8a-c092-42db-bd0c-ed7750114553)
 Next is to set the port class and port use attribute for the layout, select the port, S, in this example, select output Y, and check what is it connected to by using the ```what``` command in the tkcon window, use the command ```port class output``` ```port use signal``` to denote it as output for signal, similarly we do it for input port.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a96be4ab-ceb0-4ddc-9114-6339d8f3dcc4)
-we use the command ```save sky130_vsdinv.mag```
-to generate the lef file, we launch magic 
+we use the command 
+```tcl
+save sky130_vsdinv.mag
 ```
+to generate the lef file, we launch magic 
+```tcl
 magic -T sky130A.tech sky130_vsdinv.mag &
 lef write
 ```
 in the tkcon window
 copy the lef to picorv32a folder, the basic idea is to add our custom cell to the openlane flow
-```cp sky130_vsdinv.lef /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/```
+```bash 
+cp sky130_vsdinv.lef /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/
+```
 copy the library files
-```cp libs/sky130_fd_sc_hd__* /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/```
+```bash 
+cp libs/sky130_fd_sc_hd__* /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/
+```
 
 we need to modify the config.tcl
-```
+```tcl
 set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib
 set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__fast.lib
 set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__slow.lib
@@ -499,7 +510,7 @@ set ::env(EXTRA_LEFS) {glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/sr
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d49acc09-228e-4962-81d1-82892c911dba)
 we need to go to the openlane directory, ```cd Desktop/work/tools/openlane_working_dir/openlane```
 we invoke the docker, 
-```
+```tcl
 ./flow.tcl -interactive
 package require openlane 0.9
 prep -design picorv32a
@@ -522,25 +533,25 @@ when we look at `merged.lef` folder, we can see that the custom inverter cell wa
 reran synthesis with ```set ::env(SYNTH_STRATEGY) "DELAY 3"``` & ```set ::env(SYNTH_SIZING) 1```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9fe16df4-4b33-4ea7-bd21-f83139de71c8)
 Since ```run_floorlpan``` gave error, followed the following command which is equivalent, 
-```
+```tcl
 init_floorplab
 place_io
 tap_decap_or
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/6907689e-4a4f-45b4-a6ac-da757246cf95)
 next is to 
-```
+```tcl
 run_placement
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/04db3166-0c67-48e5-a202-8085f5f8d926)
 when I attempted to open magic and look at the placement def file, i got error so I reran the steps above
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/dff2fa52-53de-4c6c-aeac-8a2ac3f622df)
 going to the 
-```
+```bash
 cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/20-04_16-20/results/placement
 ```
 opening up magic using 
-```
+```bash
 magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/51a2706b-ff26-49c2-92b1-a5db0227be86)
@@ -564,7 +575,7 @@ Defining the `pre_sta.conf` (picture collected post simulation)
 `my_base.sdc` definition in the folder ``Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src``
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f6bbedfe-917e-4964-8a6d-79e5e6fa7c6a)
 if we run the sta analysis from the folder openlane, 
-```
+```bash
 sta pre_sta.conf
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f145cbff-b1e9-478c-9fa4-a5ae4897478d)
@@ -572,7 +583,7 @@ we got a voilated slack
 Delay of any cell =Fn(input slew, output capacitance),
 We can try to optimize out fan out value
 In the openlane flow, we set, 
-```
+```tcl
 set ::env(SYNTH_MAX_FANOUT) 4
 run_synthesis
 *Note PNR is an iterative flow as long as you dont exit the flow you can iterate again with new values
@@ -620,24 +631,31 @@ left hand side of the equation is data arrival time and right hand side is data 
 #### L3 lab steps to analyze timing with real clocks using open STA, L4- lab steps to execute openSTA with right timing libraries and CTS assignment, L5- lab steps to observe impact of bigger CTS buffer on setup and hold timing
 
 once in openlane folder, we can run 
-```
+```tcl
 openroad
+# we have to read the lef,
+read_lef /openLANE_flow/designs/picorv32a/runs/20-04_16-58/tmp/merged.lef
+#we have to read the def file,
+read_def /openLANE_flow/designs/picorv32a/runs/20-04_16-58/results/cts/picorv32a.cts.def
+#we create a db,
+write_db pico_cts.db
+#we read the db,
+read_db pico_cts.db
+#we read the verilog netlist,
+read_verilog /openLANE_flow/designs/picorv32a/runs/20-04_16-58/results/synthesis/picorv32a.synthesis_cts.v
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+link_design picorv32a
+#to the library
+#link the sdc created
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+set_propagated_clock [all_clocks]
+report_checks -path _delay min_max -format full_clock_expanded -digits 4
 ```
-we have to read the lef, using ```read_lef /openLANE_flow/designs/picorv32a/runs/20-04_16-58/tmp/merged.lef```
-we have to read the def file, ```read_def /openLANE_flow/designs/picorv32a/runs/20-04_16-58/results/cts/picorv32a.cts.def```
-we create a db, ```write_db pico_cts.db```
-we read the db, ```read_db pico_cts.db```
-we read the verilog netlist, ```read_verilog /openLANE_flow/designs/picorv32a/runs/20-04_16-58/results/synthesis/picorv32a.synthesis_cts.v```
-use ```read_liberty $::env(LIB_SYNTH_COMPLETE)```
-```link_design picorv32a```, to the library
-link the sdc created,```read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc```
-use, ```set_propagated_clock [all_clocks]```
-use, ```report_checks -path _delay min_max -format full_clock_expanded -digits 4```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/85868157-481b-4a9e-8d83-463b460f064f)
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a74ff9d0-9c1b-45d8-9b4f-a6ef1e9fd23f)
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/523fdcd8-d049-41ab-93c0-a06ef564fb72)
 insturctor informed that triton CTS is analyzing for min and max columns instead of a simple column. we can rerun the result by removing buffer 1
-```
+```tcl
 set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]
 set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/220-04_16-58/results/placement/picorv32a.placement.def
 ```
@@ -667,7 +685,7 @@ Parasitic extraction is the resistance and capacitance extraction out of the net
 what is the last step of placement?
 ``echo $::env(CURRENT_DEF)`` will give the value of the last step
 use command, 
-```
+```tcl
 gen_pdn
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/701b4cc7-d9f9-4648-bf86-869fdcf72d44)
@@ -676,7 +694,8 @@ strap explaination
 we can view the layout after this step and see the staps placed
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/a3cfd0c9-af50-4a97-a1c8-759f50043cf1)
 use the command, 
-```run_routing
+```tcl
+run_routing
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/f03cb3fa-d71f-489d-b528-f7a46ed2847d)
 routing takes the `longest time` to complete
