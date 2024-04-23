@@ -508,7 +508,10 @@ set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc
 set ::env(EXTRA_LEFS) {glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef]
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/d49acc09-228e-4962-81d1-82892c911dba)
-we need to go to the openlane directory, ```cd Desktop/work/tools/openlane_working_dir/openlane```
+we need to go to the openlane directory, 
+```bash
+cd Desktop/work/tools/openlane_working_dir/openlane
+```
 we invoke the docker, 
 ```tcl
 ./flow.tcl -interactive
@@ -611,8 +614,15 @@ Even though we add buffer, we need shielding to protect the integrity of these c
 
 We can save our old verilog file and make a copy of it,
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/2916069d-b565-4e90-bb67-571914232aea)
-we can write_verilog /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/20-04_16-58/results/synthesis/picorv32a.synthesis.v
-As the previous design had better numbers we can use the old settings with SYNTH_STRATEGY having DELAY 3 and, in order to overwrite the result in the present folder, we can always use the command "prep -design picorv32a -tag 20-04_16-58 -overwrite", and use the lefs, rerun synthesis, rerun floorplan, and run CTS
+we can 
+```bash
+write_verilog /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/20-04_16-58/results/synthesis/picorv32a.synthesis.v
+```
+As the previous design had better numbers we can use the old settings with SYNTH_STRATEGY having DELAY 3 and, in order to overwrite the result in the present folder, we can always use the command 
+```tcl
+prep -design picorv32a -tag 20-04_16-58 -overwrite
+```
+and use the lefs, rerun synthesis, rerun floorplan, and run CTS
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/09536521-5558-4cec-9278-7a3d0173bb4f)
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9f65d826-c7c3-4749-b40a-09bb1f653bd3)
 
