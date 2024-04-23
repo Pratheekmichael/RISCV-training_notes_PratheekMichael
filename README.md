@@ -729,3 +729,5 @@ and used that to perform the post route STA analysis and got the following slack
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/72a4b11d-418d-4bd0-8f95-7ed3a3752a17)
 
 
+# POST WORKSHOP ACKNOWLEDGMENT
+- I want to thank the instructors, Mr.Kunal Ghosh, Mr.Nickson Jose, Mr.Mohamad Shalan & Mr.Tim Edwards for conveying this valuable information in this workshop.
