@@ -21,7 +21,7 @@ In short,
 
 #### L3- software apps to Hardware
 
-``` 
+```txt
 Apps --> system software (OS (program lang)-->
 compilter (RISC-V/ARM, ISA)--> assembler (converts to Machine language program)-->
 Hardware (RISCV CPU core or ARM CPU)
@@ -65,7 +65,7 @@ STA, DRC & LVS (magic can be used for DRC and spice extraction)
 #### L1 - Openlane directory structure
 
 Ubuntu help
-```ubuntu
+```bash 
 ls --help
 ```
 will list all commands and what do they do.
@@ -77,25 +77,25 @@ will list all commands and what do they do.
 - The highest priority .tcl file is `sky130A_sky130_fd_sc_hd_config.tcl` which will overwrite the `config.tcl` settings, ex: clock period.
 
 In the openlane directory, which is 
-```cd Desktop/work/tools/openlane_working_dir/openlane``` we invoke the command 
-```
+```bash
+cd Desktop/work/tools/openlane_working_dir/openlane
 docker
 #docker apparently is a short for the command docker run -it -v $(pwd_:/openLANE_flow -v $PDK_ROOT:$PDK_ROOT -e PDK_ROOT=$PRDK_ROOT -u $(id -u $USER):$(id -g $USER) openlane:rc2
 (not verified as copied from video, version might be v0.21)
 
 ```
 the next command is 
-```
+```tcl
 ./flow.tcl -interactive
 ```
 
 once open lane launches, we import packages required to run this and the command is 
-```ubuntu
+```tcl
 package required openlane 0.9
 ```
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/186f215d-ad18-4148-87de-31c24bf7e069)
 the next step is to prep design, to have design specific files generated in the `Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a` folder. the command for  this is 
-```
+```tcl
 prep -design picorv32a
 ```
 
@@ -104,7 +104,7 @@ prep -design picorv32a
 - So in the `Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a` a new runs folder got created due to the design prep command we executed, our later synthesis file will be in this folder.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/3304a0b9-a439-4f02-9fae-c3a5fb160e88)
 now we can use the command
-```
+```tcl
 run_synthesis
 ```
 to perform the first step in the physical implementation.
@@ -112,7 +112,7 @@ to perform the first step in the physical implementation.
 openalne efabless information is available on github at [github efabless link] https://github.com/efabless/openlane2
 
 Once the synthesis is succesfully completed, we can use 
-```
+```tcl
 exit
 `to exit from openlane`
 exit
@@ -124,8 +124,13 @@ this will ensure nothing is active in the background.
 #### L4-openlane project link 
 
 - To install the openlane in ubuntu or VB from scratch, we first install git
-  ```sudo apt install git``` and use the git clone
-  ```[url](https://github.com/efabless/OpenLane.git)```
+  ```bash
+  sudo apt install git
+  ```
+  and use the git clone
+  ```bash
+  [url](https://github.com/efabless/OpenLane.git)
+  ```
 command to copy over the openlane files from the github link, [github efabless link] https://github.com/efabless/openlane
 
 Open lane flow is shown in the greyed box of this flow
@@ -134,7 +139,7 @@ Open lane flow is shown in the greyed box of this flow
 command structure has to follow a flow, ` synthesis-->floorplan-->placement-->cts-->routing `, if this is not followed the flow will fail to generate output. 
 
 A fully automation of these commands can be done by the command 
-```
+```tcl
 ./flow.tcl -design picorv32a
 ```
 the `right part-picorv32a` of the command is the design name.
@@ -144,7 +149,9 @@ On youtube, it is recommended to watch the `fossi-dialup` videos by `Tim Ansell`
 #### L5: Steps to characterize the synthesis results
 
 The task is to find the 
-```flop ratio = # of D flip flops/ # of cells```
+```math 
+Flop\ ratio = \frac{Number\ of\ D\ flip\ flops}{\ Number\ of\ cells}
+```
 
 In the synthesis which was run the ratio is 10.84%.
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/0a3e46ac-d981-4db9-9cf6-96b04c8f7d0b)
@@ -159,7 +166,15 @@ The synthesis statistic report gives us the info about the flop ratio again.
 
 #### L1 - Utilization factor and aspect ratio
 
-Dimension of the standard cells are the feature which are of interest, to find the total area of the standard cells inside the netlist. A silicon wafer will comprise of multiple die, a die in turn has a core which has the logic built on it. ```Utilization factor(UF) = area occupied by the netlist/ area of the core``` If `UF=1` then core is completely utilized and additional logic cannot be necessary. ```Aspect Ratio = Height of the die/ width of die``` if `AR 1`, then its a square. example `width of core is 4 unit and length is 2 unit, UF=0.5, AR=0.5`
+Dimension of the standard cells are the feature which are of interest, to find the total area of the standard cells inside the netlist. A silicon wafer will comprise of multiple die, a die in turn has a core which has the logic built on it. 
+```math
+Utilization\ factor\ UF = \frac{area\ occupied\ by\ the\ netlist}{area\ of\ the\ core}
+```
+If `UF=1` then core is completely utilized and additional logic cannot be necessary. 
+```math
+Aspect\ Ratio = \frac{Height\ of\ the\ die}{width\ of\ die}
+```
+if `AR 1`, then its a square. example `width of core is 4 unit and length is 2 unit, UF=0.5, AR=0.5`
 
 #### L2 - Concept of preplaced cells.
 
