@@ -674,9 +674,12 @@ another view
 ### SK2- timing analysis with ideal clocks using open STA
 #### L1-setup timing analysis and introduction to flip flop setup time, L2-Introduction to clock jitter and uncertainity
 
-Combinational delay < (T- setup time)
+ 
+$` Combinational delay < (T- setup time) `$
+
 jitter: temporary variation of clock period, adding uncertainity to the above equation
-combinational delay <(T- setup time -setup uncertainity)
+
+$` combinational delay <(T- setup time -setup uncertainity) `$
 Combinational delay will involves the cell delay+wire length delay as well
 
 #### L3- Lab steps to configure open STA for post -synth timing analysis, L4-lab steps to optimize synthesis to reduce setup voilation, L5- Lab steps to do basic timing ECO
@@ -756,12 +759,13 @@ and use the lefs, rerun synthesis, rerun floorplan, and run CTS
 ### SK3- Timing analysis with real clocks
 #### L1-setup timing analysis using real clock, L2-Hold time analysis using real clocks
 
-combinational delay + launch flop clock network delay < T + capture flop clock network delay - setup time - uncertainity
+$` combinational delay + launch flop clock network delay < T + capture flop clock network delay - setup time - uncertainity `$
+
 right hand side of the equation is data required time, left side is data arrival time, subtraction of these will give slack, which is expected to be 0 or positive
 
-combinational delay > hold delay (MUX2 delay)
+$` combinational delay > hold delay (MUX2 delay) `$
 
-combinational delay + launch flop delay > Hold delay + capture flop delay + hold uncertainity
+$` combinational delay + launch flop delay > Hold delay + capture flop delay + hold uncertainity `$
 
 left hand side of the equation is data arrival time and right hand side is data required time, slack should be 0 or positive
 
@@ -883,7 +887,34 @@ I was informed that after the pdn we get the spef, so i used that
 
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/add870a4-7216-4e39-bd2b-41532a752147)
 
-and used that to perform the post route STA analysis and got the following slack (MET:))
+and used that to perform the post route STA analysis
+
+once in openlane folder, we can run 
+```tcl
+openroad
+# we have to read the lef,
+read_lef /openLANE_flow/designs/picorv32a/runs/20-04_23-41/tmp/merged.lef
+#we have to read the def file,
+read_def /openLANE_flow/designs/picorv32a/runs/20-04_23-41/results/cts/picorv32a.cts.def
+#we create a db,
+write_db pico_cts.db
+#we read the db,
+read_db pico_cts.db
+#we read the verilog netlist,
+read_verilog /openLANE_flow/designs/picorv32a/runs/20-04_23-41/results/synthesis/picorv32a.synthesis_cts.v
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+link_design picorv32a
+#to the library
+#link the sdc created
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+set_propagated_clock [all_clocks]
+#reading the extracted spef
+read_spef /openLANE_flow/designs/picorv32a/runs/20-04_23-41/results/routing/picorv32a.spef
+report_checks -path _delay min_max -format full_clock_expanded -digits 4
+```
+
+
+and got the following slack (MET:))
 
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/72a4b11d-418d-4bd0-8f95-7ed3a3752a17)
 
