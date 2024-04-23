@@ -57,7 +57,7 @@ ASIC flow objective is to take RTL (register transfer level) to GDSII, aka, Auto
 Design RTL --> RTL synthesis --> STA --> Design for Test (DFT) -->  physical implementation (using operoad app)
  --> Logic equivalence check --> Detailed routing -->
 if needed can deal with antenna rule voilation by insertion of fake antenna diode next to every cell input to check voilation
-( if yes, a diode can be palced to mitigate this) (magic can be used) -->
+(if yes, a diode can be palced to mitigate this) (magic can be used) -->
 STA, DRC & LVS (magic can be used for DRC and spice extraction)
 ```
 ### D1-SK3 Opensource EDA tools
