@@ -922,6 +922,10 @@ and got the following slack (MET:))
 # POST WORKSHOP ACKNOWLEDGMENT
 - I want to thank the instructors, Mr.Kunal Ghosh, Mr.Nickson Jose, Mr.Mohamad Shalan & Mr.Tim Edwards for conveying this valuable information in this workshop.
 
+# COURSE COMPLETION CERTIFICATE
+![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/6a39a146-3562-4409-98c7-f01e5c51cf08)
+
+
 # Weblinks used
 
 - [github skywater pdk] https://github.com/google/skywater-pdk
