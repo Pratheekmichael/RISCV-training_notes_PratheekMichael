@@ -252,6 +252,8 @@ run_floorplan
 - 
 ![image](https://github.com/Pratheekmichael/RISCV-training_notes_PratheekMichael/assets/166673625/9a677e8d-0235-4231-a339-fcc8ca986396)
 
+from the above we can see that die size is 660.685 x 671.405 which translates to an area of 443587.2124 um^2
+
 To see actual layout in magic, go to the respective directory
 ```bash
 cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/14-04_23-16/results/floorplan/
